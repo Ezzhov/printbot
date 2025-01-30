@@ -27,6 +27,20 @@
             font-size: 18px;
             color: #333;
         }
+        #output {
+            margin-top: 20px;
+            font-size: 16px;
+            white-space: pre-wrap;
+            text-align: left;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            max-height: 300px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -35,8 +49,36 @@
     <a href="{{ url_for('scan') }}">
         <button class="button">Запустить сканирование</button>
     </a>
+    <a href="{{ url_for('scan_adf') }}">
+        <button class="button">Сканировать с автоподачей</button>
+    </a>
+
+    <div id="output"></div>
+
     {% if message %}
     <p class="message">{{ message }}</p>
     {% endif %}
+
+    <script>
+        // Функция для получения вывода скрипта через SSE
+        function startStream(url) {
+            const eventSource = new EventSource(url);
+            const outputDiv = document.getElementById("output");
+
+            eventSource.onmessage = function(event) {
+                outputDiv.textContent += event.data + '\n';
+                outputDiv.scrollTop = outputDiv.scrollHeight;  // Прокрутка вниз
+            };
+
+            eventSource.onerror = function() {
+                eventSource.close();
+            };
+        }
+
+        // Начинаем стриминг, если скрипт был запущен
+        if (window.location.pathname == "/scan" || window.location.pathname == "/scan_adf") {
+            startStream(window.location.href);
+        }
+    </script>
 </body>
 </html>
