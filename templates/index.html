@@ -46,20 +46,21 @@
 <body>
     <h1>Сканирование документа</h1>
     <p>Нажмите кнопку, чтобы начать сканирование.</p>
-    <a href="{{ url_for('scan') }}">
-        <button class="button">Запустить сканирование</button>
-    </a>
-    <a href="{{ url_for('scan_adf') }}">
-        <button class="button">Сканировать с автоподачей</button>
-    </a>
+    <button class="button" onclick="startScan()">Запустить сканирование</button>
+    <button class="button" onclick="startScanAdf()">Сканировать с автоподачей</button>
 
     <div id="output"></div>
 
-    {% if message %}
-    <p class="message">{{ message }}</p>
-    {% endif %}
-
     <script>
+        // Функция для начала сканирования
+        function startScan() {
+            startStream('/scan');
+        }
+
+        function startScanAdf() {
+            startStream('/scan_adf');
+        }
+
         // Функция для получения вывода скрипта через SSE
         function startStream(url) {
             const eventSource = new EventSource(url);
@@ -74,11 +75,7 @@
                 eventSource.close();
             };
         }
-
-        // Начинаем стриминг, если скрипт был запущен
-        if (window.location.pathname == "/scan" || window.location.pathname == "/scan_adf") {
-            startStream(window.location.href);
-        }
     </script>
 </body>
 </html>
+
