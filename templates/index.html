@@ -9,18 +9,26 @@
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 50px;
+            padding: 0 20px;
+            background-color: rgb(83, 86, 90);  /* Фон Pantone Cool Gray 11 */
+            color: white; /* Белый текст на фоне Cool Gray 11 */
+            position: relative;
+            min-height: 100vh;  /* Чтобы контент не перекрывал логотип */
+            padding-bottom: 100px;  /* Отступ снизу для логотипа */
         }
         .button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
+            background-color: rgb(230, 43, 30);  /* Фон кнопок Pantone 485 */
+            color: white; /* Белый текст на кнопках */
             border: none;
             border-radius: 5px;
+            width: 200px;
+            margin: 10px;
         }
         .button:hover {
-            background-color: #45a049;
+            background-color: rgb(210, 35, 25);  /* Тёмный оттенок при наведении */
         }
         .message {
             margin-top: 20px;
@@ -35,21 +43,59 @@
             width: 80%;
             margin-left: auto;
             margin-right: auto;
-            border: 1px solid #ccc;
+            border: 1px solid rgb(230, 43, 30);  /* Рамка с цветом Pantone 485 */
             padding: 10px;
-            background-color: #f9f9f9;
+            background-color: rgb(230, 43, 30);  /* Фон вывода Pantone 485 */
+            color: white;  /* Белый текст */
             max-height: 300px;
             overflow-y: auto;
+        }
+        .logo {
+            position: fixed;  /* Фиксируем логотип внизу */
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;  /* Убедимся, что логотип всегда будет поверх контента */
+        }
+
+        /* Медиа-запросы для адаптации под разные устройства */
+        @media (max-width: 768px) {
+            body {
+                margin-top: 20px;
+                padding: 0 10px;
+            }
+            .button {
+                width: 100%; /* Для мобильных устройств кнопки занимают всю ширину */
+                font-size: 14px;
+            }
+            #output {
+                width: 100%; /* Вывод также будет адаптирован под мобильный экран */
+            }
+        }
+
+        @media (min-width: 769px) {
+            body {
+                margin-top: 50px;
+            }
+            .button {
+                width: 200px; /* Для ПК кнопки будут иметь фиксированную ширину */
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Сканирование документа</h1>
-    <p>Нажмите кнопку, чтобы начать сканирование.</p>
+    <h1>РЕДСОФТ Дубна </h1>
+    <p>Сканирование в сетевую папку</p>
+    <p>\\10.81.3.200\skanoscame</p>
     <button class="button" onclick="startScan()">Запустить сканирование</button>
     <button class="button" onclick="startScanAdf()">Сканировать с автоподачей</button>
 
     <div id="output"></div>
+
+    <div class="logo">
+        <img src="{{ url_for('static', filename='LOGO.png') }}" alt="Логотип" width="150"> <!-- Логотип снизу по центру -->
+    </div>
 
     <script>
         // Функция для начала сканирования
@@ -78,4 +124,3 @@
     </script>
 </body>
 </html>
-
