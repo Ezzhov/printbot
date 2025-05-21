@@ -4,9 +4,10 @@ import time
 
 app = Flask(__name__)
 
-# Путь к вашим скриптам
+# Пути к вашим скриптам
 SCAN_SCRIPT_PATH = "/home/skan_rsd/scan.sh"
 SCAN_ADF_SCRIPT_PATH = "/home/skan_rsd/skan_adf.sh"
+SCAN94_SCRIPT_PATH = "/home/skan_rsd/skan94.sh"  # Новый путь
 
 def run_script_and_stream_output(script_path):
     """Функция для запуска скрипта и отправки его вывода через SSE"""
@@ -25,14 +26,15 @@ def index():
 
 @app.route('/scan')
 def scan():
-    # Запускаем сканирование и сразу показываем вывод на главной странице
     return Response(run_script_and_stream_output(SCAN_SCRIPT_PATH), content_type='text/event-stream')
 
 @app.route('/scan_adf')
 def scan_adf():
-    # Запускаем сканирование с автоподачей и сразу показываем вывод на главной странице
     return Response(run_script_and_stream_output(SCAN_ADF_SCRIPT_PATH), content_type='text/event-stream')
+
+@app.route('/scan94')  # Новый маршрут
+def scan94():
+    return Response(run_script_and_stream_output(SCAN94_SCRIPT_PATH), content_type='text/event-stream')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-

@@ -88,8 +88,9 @@
     <h1>РЕДСОФТ Дубна </h1>
     <p>Сканирование в сетевую папку</p>
     <p>\\10.81.3.200\skanoscame</p>
-    <button class="button" onclick="startScan()">Запустить сканирование</button>
-    <button class="button" onclick="startScanAdf()">Сканировать с автоподачей</button>
+    <button class="button" onclick="startScan()">Принтер Ч/Б<br>Запустить сканирование</button>
+    <button class="button" onclick="startScanAdf()">Принтер Ч/Б<br>Сканировать с автоподачей</button>
+    <button class="button" onclick="startScanColor()">Принтер цвет.<br>Запустить сканирование</button>
 
     <div id="output"></div>
 
@@ -98,7 +99,7 @@
     </div>
 
     <script>
-        // Функция для начала сканирования
+        // Функции запуска сканирования
         function startScan() {
             startStream('/scan');
         }
@@ -107,14 +108,19 @@
             startStream('/scan_adf');
         }
 
-        // Функция для получения вывода скрипта через SSE
+        function startScanColor() {
+            startStream('/scan94');  // Используем маршрут из Flask для цветного сканирования
+        }
+
         function startStream(url) {
             const eventSource = new EventSource(url);
             const outputDiv = document.getElementById("output");
 
+            outputDiv.textContent = '';  // Очищаем перед новым запуском
+
             eventSource.onmessage = function(event) {
                 outputDiv.textContent += event.data + '\n';
-                outputDiv.scrollTop = outputDiv.scrollHeight;  // Прокрутка вниз
+                outputDiv.scrollTop = outputDiv.scrollHeight;
             };
 
             eventSource.onerror = function() {
